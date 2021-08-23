@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+    <!-- Base Define -->
+    <definition name="base.definition"
+                template="/WEB-INF/layouts/mainlayout.jsp">
+        <put-attribute name="caption" value=""/>
+        <put-attribute name="header" value="/WEB-INF/basefragments/_header.jsp"/>
+        <put-attribute name="menu" value="/WEB-INF/basefragments/_menu.jsp"/>
+        <put-attribute name="body" value=""/>
+        <put-attribute name="footer" value="/WEB-INF/basefragments/_footer.jsp"/>
+    </definition>
+
+    <!-- Inner Define -->
+    <definition name="inner.definition"
+                template="/WEB-INF/layouts/innercontent.jsp">
+    </definition>
+
+    <!-- All Employees Page -->
+    <definition name="allEmployees" extends="base.definition">
+        <put-attribute name="caption" value="All Employees"/>
+        <put-attribute name="body" value="/WEB-INF/bodyfragments/allEmployees.jsp"/>
+    </definition>
+
+    <!-- Edit Employee Page -->
+    <definition name="editEmployee" extends="base.definition">
+        <put-attribute name="caption" value="Edit Employee"/>
+        <put-attribute name="saveButtonName" value="Update" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/bodyfragments/editCreateEmployee.jsp"/>
+    </definition>
+
+    <!-- Create Employee Page -->
+    <definition name="createEmployee" extends="base.definition">
+        <put-attribute name="caption" value="Create New Employee"/>
+        <put-attribute name="saveButtonName" value="Create" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/bodyfragments/editCreateEmployee.jsp"/>
+    </definition>
+
+    <!-- About Page -->
+    <definition name="about" extends="base.definition">
+        <put-attribute name="caption" value="About"/>
+        <put-attribute name="body" value="/WEB-INF/bodyfragments/about.jsp"/>
+    </definition>
+</tiles-definitions>
