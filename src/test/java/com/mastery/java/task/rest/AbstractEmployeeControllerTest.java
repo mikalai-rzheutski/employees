@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public abstract class AbstarctEmployeeControllerTest {
+public abstract class AbstractEmployeeControllerTest {
 
 	protected Employee employee = new Employee("Peter", "Pen", 1, "worker", Gender.MALE, LocalDate.of(1902, 1, 1));
 
@@ -35,6 +35,8 @@ public abstract class AbstarctEmployeeControllerTest {
 			throw new RuntimeException(e);
 		}
 	}
+
+	protected abstract void set();
 
 	protected void setMockmvc(MockMvc mockMvc) {
 		this.mockMvc = mockMvc;

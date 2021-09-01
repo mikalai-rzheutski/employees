@@ -17,17 +17,18 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
-public class EmployeeControllerIntegrationTest extends AbstarctEmployeeControllerTest {
+public class EmployeeControllerIntegrationTest extends AbstractEmployeeControllerTest {
 
 	@Autowired
-	EmployeeService employeeService;
+    private EmployeeService employeeService;
 
 	@Autowired
 	private MockMvc mockMvc;
 
 
 	@BeforeAll
-	public void setUp() {
+    @Override
+    protected void set() {
 		existentId = employeeService.createEmployee(employee);
 		setMockmvc(mockMvc);
 	}

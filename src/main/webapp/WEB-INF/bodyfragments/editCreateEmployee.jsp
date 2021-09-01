@@ -5,7 +5,7 @@
 <%@ page import="com.mastery.java.task.dto.Gender" %>
 
 
-<form id="employeeData" action="saveEmployee" method="post">
+<form id="employeeData">
     <div class="d-flex flex-column align-items-stretch">
         <div class="d-flex ">
             <div class="flex-grow-1 d-flex flex-column align-items-start justify-content-start">
@@ -14,7 +14,7 @@
                         <span class="input-group-text" id="basic-addon1" style="width: 8em;">ID</span>
                     </div>
                     <input id="id" type="text" readonly="true" style="text-align:center;  font-weight: bold;"
-                           autocomplete="off" name="id" required="true" class="form-control"
+                           autocomplete="off" name="id" class="form-control"
                            aria-describedby="basic-addon1"/>
                 </div>
                 <div class="input-group input-group-sm mt-3" style="width: 20em;">
@@ -39,7 +39,8 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon4" style="width: 8em;">Dept. ID</span>
                     </div>
-                    <input id="departmentId" type="text" autocomplete="off" name="departmentId" required="true"
+                    <input id="departmentId" type="number" min="0" step="1" autocomplete="off" name="departmentId"
+                           required="true"
                            class="form-control" aria-describedby="basic-addon4"/>
                 </div>
 
@@ -79,7 +80,8 @@
 <div class="d-flex justify-content-between align-items-center mb-5 mt-5">
     <button class="btn btn-outline-primary" onclick="window.location.href='/employees'">Go to the List of Employees
     </button>
-    <button id="<tiles:insertAttribute name="saveButtonName"/>" class="btn btn-outline-secondary" style="width: 15em;">
+    <button form="employeeData" id="<tiles:insertAttribute name="saveButtonName"/>" class="btn btn-outline-secondary"
+            style="width: 15em;">
         <tiles:insertAttribute name="saveButtonName"/></button>
     <button id="delete" class="btn btn-outline-danger">Delete</button>
 </div>

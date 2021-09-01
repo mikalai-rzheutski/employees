@@ -11,13 +11,13 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Employee {
-	private int id;
+    private Integer id;
 
 	private String firstName;
 
 	private String lastName;
 
-	private int departmentId;
+    private Integer departmentId;
 
 	private String jobTitle;
 

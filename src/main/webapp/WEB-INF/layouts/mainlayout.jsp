@@ -21,7 +21,6 @@
     <link rel="stylesheet" href="<c:url value="/resources/css/main.css"/>">
     <link rel="stylesheet" href="<c:url value="/resources/css/table.css"/>">
     <script src="<c:url value="/resources/js/onLoad.js"/>"></script>
-    <script src="<c:url value="/resources/js/locale.js"/>"></script>
 </head>
 
 <body class="d-flex flex-column bg-light">

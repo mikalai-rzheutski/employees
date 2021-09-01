@@ -16,7 +16,7 @@ import static org.mockito.Mockito.mock;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension.class)
-public class EmployeeControllerUnitTest extends AbstarctEmployeeControllerTest {
+public class EmployeeControllerUnitTest extends AbstractEmployeeControllerTest {
 
 	private EmployeeService employeeService;
 
@@ -25,7 +25,8 @@ public class EmployeeControllerUnitTest extends AbstarctEmployeeControllerTest {
 	private MockMvc unitMockMvc;
 
 	@BeforeAll
-	public void setUp() {
+    @Override
+    protected void set() {
 		existentId = 10;
 		employeeService = mock(EmployeeService.class);
 		employeeController = new EmployeeController(employeeService);

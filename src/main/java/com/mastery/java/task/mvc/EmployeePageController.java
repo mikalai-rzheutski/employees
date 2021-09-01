@@ -12,8 +12,7 @@ public class EmployeePageController {
 
 	@GetMapping
 	public ModelAndView showListOfAllEmployees() {
-		ModelAndView model = new ModelAndView("allEmployees");
-		return model;
+		return new ModelAndView("allEmployees");
 	}
 
 	@GetMapping("/{id}")
@@ -25,7 +24,6 @@ public class EmployeePageController {
 
 	@GetMapping("/new/")
 	public ModelAndView createEmployee() {
-		ModelAndView model = new ModelAndView("createEmployee");
-		return model;
+		return new ModelAndView("createEmployee");
 	}
 }
