@@ -1,5 +1,5 @@
 -- This script inserts data only when the table is empty
-INSERTINTO
+INSERT INTO
 employee
 (
 first_name,
