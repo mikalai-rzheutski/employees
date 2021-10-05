@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
 public class EmployeeControllerIntegrationTest extends AbstractEmployeeControllerTest {
 
@@ -24,7 +23,6 @@ public class EmployeeControllerIntegrationTest extends AbstractEmployeeControlle
 
 	@Autowired
 	private MockMvc mockMvc;
-
 
 	@BeforeAll
     @Override

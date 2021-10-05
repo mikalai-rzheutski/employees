@@ -44,4 +44,10 @@
         <put-attribute name="caption" value="About"/>
         <put-attribute name="body" value="/WEB-INF/bodyfragments/about.jsp"/>
     </definition>
+
+    <!-- Loggers Page -->
+    <definition name="loggers" extends="base.definition">
+        <put-attribute name="caption" value="Loggers"/>
+        <put-attribute name="body" value="/WEB-INF/bodyfragments/loggers.jsp"/>
+    </definition>
 </tiles-definitions>

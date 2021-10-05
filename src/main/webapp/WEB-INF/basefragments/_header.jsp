@@ -21,7 +21,11 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-warning mr-3" style="white-space: nowrap;"
-                           href="<c:url value = "/swagger-ui/"/>">REST API</a>
+                           href="<c:url value = "/loggers"/>">Loggers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-info mr-3" style="white-space: nowrap;" target="_blank"
+                           href="<c:url value = "/swagger-ui/"/>">REST API / Swagger UI</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-warning" style="white-space: nowrap;" href="<c:url value = "/about"/>">About</a>

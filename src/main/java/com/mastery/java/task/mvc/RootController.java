@@ -10,5 +10,10 @@ public class RootController {
 	public String about() {
 		return "about";
 	}
+
+	@GetMapping("/loggers")
+	public String loggers() {
+		return "loggers";
+	}
 }
 

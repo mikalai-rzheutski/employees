@@ -1,70 +1,27 @@
 package com.mastery.java.task.service;
 
-import com.mastery.java.task.dao.EmployeeDao;
 import com.mastery.java.task.dto.Employee;
-import com.mastery.java.task.rest.exceptions.NotFoundException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class EmployeeService {
+public abstract class EmployeeService {
 
-	private final EmployeeDao employeeDao;
+    public abstract List<Employee> getAllEmployees();
 
-	/**
-	 * Returns all the Employees from the database
-	 *
-	 * @return a List of employees
-	 */
-	public List<Employee> fetchAllEmployees() {
-		return employeeDao.getAllEmployees();
-	}
+    public abstract Employee getEmployee(int id);
 
-	/**
-	 * Returns an Employee by its id
-	 *
-	 * @param id identifier of the Employee to be returned
-	 * @return an Employee object
-	 */
-	public Employee getEmployee(int id) {
-		Employee employee = employeeDao.getEmployeeById(id);
-		if (employee == null) throw new NotFoundException("Employee with id=" + id + " was not found in the database.");
-		return employee;
-	}
+    public abstract int createEmployee(Employee employee);
 
-	/**
-	 * Saves a new Employee to the database.
-	 * @param employee Employee object to be saved
-	 * @return id of the created object
-	 */
-	public int createEmployee(Employee employee) {
-		return employeeDao.addEmployee(employee);
-	}
+    public abstract void updateEmployee(int id, Employee employee);
 
-	/**
-	 * Updates the existent Employee in the database
-	 * @param id identifier of the Employee to be updated
-	 * @param employee the new Employee object
-	 */
-	@Transactional
-	public void updateEmployee(int id, Employee employee) {
-		if (!employeeDao.isEmployeeExistent(id))
-			throw new NotFoundException("Employee with id=" + id + " cannot be updated since it was not found in the database.");
-		employeeDao.updateEmployee(id, employee);
-	}
+    public abstract void deleteEmployee(int id);
 
-	/**
-	 * Deletes an Employee from the database
-	 * @param id identifier of the Employee to be deleted
-	 */
-	@Transactional
-	public void deleteEmployee(int id) {
-		if (!employeeDao.isEmployeeExistent(id))
-			throw new NotFoundException("Employee with id=" + id + " was not deleted since it was not found in the database.");
-		employeeDao.deleteEmployee(id);
-	}
+    protected abstract Logger getLogger();
+
+    protected void log() {
+        getLogger().info("Method {} was called from {}",
+                () -> Thread.currentThread().getStackTrace()[2].getMethodName(),
+                () -> this.getClass().getName());
+    }
 }

@@ -1,4 +1,4 @@
-package com.mastery.java.task.dao;
+package com.mastery.java.task.dal;
 
 import com.mastery.java.task.dto.Employee;
 import com.mastery.java.task.dto.Gender;
@@ -16,6 +16,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -45,7 +46,7 @@ public class EmployeeDao {
 	 *
 	 * @return a collection of Employees mapped to the obtained record
 	 */
-	public List<Employee> getAllEmployees() {
+	public List<Employee> getAll() {
 		return namedParameterJdbcTemplate.query(GET_EMPLOYEES, new EmployeeRowMapper());
 	}
 
@@ -54,7 +55,7 @@ public class EmployeeDao {
 	 * @param id an identifier of the record to be returned
 	 * @return the Employee object mapped to the obtained record
 	 */
-	public Employee getEmployeeById(int id) {
+	public Employee read(int id) {
 
 		Employee employee;
 		try {
@@ -71,7 +72,7 @@ public class EmployeeDao {
 	 * @param employee an <code>Employee</code> object to be added
 	 * @return an id of the new added record
 	 */
-	public int addEmployee(Employee employee) {
+	public int create(Employee employee) {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		namedParameterJdbcTemplate.update(INSERT_EMPLOYEE, new EmployeePropertySqlParameterSource(employee), keyHolder, new String[]{"id"});
 		return keyHolder.getKey().intValue();
@@ -83,7 +84,7 @@ public class EmployeeDao {
 	 * @param employee a <code>Employee</code> object containing new values
 	 * @return a number of the modified records. Normally, it should be equal to one.
 	 */
-	public int updateEmployee(int id, Employee employee) {
+	public int update(int id, Employee employee) {
 		employee.setId(id);
 		return namedParameterJdbcTemplate.update(UPDATE_EMPLOYEE, new EmployeePropertySqlParameterSource(employee));
 	}
@@ -92,7 +93,7 @@ public class EmployeeDao {
 	 * Deletes a record in the Employee table
 	 * @param id an identifier of the record to be deleted
 	 */
-	public void deleteEmployee(int id) {
+	public void delete(int id) {
 		namedParameterJdbcTemplate.update(DELETE_EMPLOYEE_BY_ID, new MapSqlParameterSource()
 				.addValue("id", id));
 	}

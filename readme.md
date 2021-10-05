@@ -8,7 +8,7 @@
 * [Скриншоты](#скриншоты)
 
 ## О проекте
-* Spring Boot приложение с использованием Spring JDBC для доступа к БД
+* Spring Boot приложение с использованием Spring JDBC/JPA для доступа к БД
 * Модульные и интеграционные тесты (JUnit)
 * Пользовательский интерфейс (HTML5, Bootstrap, JS)
 
@@ -29,4 +29,6 @@
 ![screenshot](screenshots/all_employees.png)  
   
 ![screenshot](screenshots/edit_employee.png)  
+
+![screenshot](screenshots/loggers.png) 
 

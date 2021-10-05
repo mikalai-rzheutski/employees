@@ -1,4 +1,4 @@
-package com.mastery.java.task.dao;
+package com.mastery.java.task.dal;
 
 import com.mastery.java.task.dto.Employee;
 import com.mastery.java.task.dto.Gender;
@@ -45,21 +45,23 @@ public class EmployeeDaoTest {
 		MockitoAnnotations.openMocks(this);
 
 		Mockito.when(namedParameterJdbcTemplate.queryForObject(Mockito.eq(EmployeeDao.GET_EMPLOYEE_BY_ID),
-				argThat(new IsSameLatLong(new MapSqlParameterSource().addValue("id", 1))),
+				argThat(new IsSameId(new MapSqlParameterSource().addValue("id", 1))),
 				ArgumentMatchers.any(EmployeeDao.EmployeeRowMapper.class)))
 			   .thenReturn(employee);
 
 		Mockito.when(namedParameterJdbcTemplate.queryForObject(Mockito.eq(EmployeeDao.GET_EMPLOYEE_BY_ID),
-				argThat(new IsSameLatLong(new MapSqlParameterSource().addValue("id", 10))),
+				argThat(new IsSameId(new MapSqlParameterSource().addValue("id", 10))),
 				ArgumentMatchers.any(EmployeeDao.EmployeeRowMapper.class)))
 				.thenThrow(EmptyResultDataAccessException.class);
 
 		Mockito.when(namedParameterJdbcTemplate.update(Mockito.eq(EmployeeDao.INSERT_EMPLOYEE),
 				ArgumentMatchers.any(BeanPropertySqlParameterSource.class),
-				ArgumentMatchers.any(KeyHolder.class)))
+				ArgumentMatchers.any(KeyHolder.class),
+				Mockito.any(String[].class)))
 				.then(invocation -> {
 					invocation
-							.<KeyHolder>getArgument(2).getKeyList()
+							.<KeyHolder>getArgument(2)
+							.getKeyList()
 							.add(Collections.singletonMap("", 99));
 					return 1;
 				});
@@ -68,19 +70,19 @@ public class EmployeeDaoTest {
 	@Test
 	public void returnEmployeeIfExistsOrNullIfNotExists() {
 
-		assertEquals(employee, employeeDao.getEmployeeById(1));
-		assertNull(employeeDao.getEmployeeById(10));
+		assertEquals(employee, employeeDao.read(1));
+		assertNull(employeeDao.read(10));
 	}
 
 	@Test
 	public void returnIdOfCreatedEmployee() {
-		assertEquals(99, employeeDao.addEmployee(employee));
+		assertEquals(99, employeeDao.create(employee));
 	}
 
-	private static class IsSameLatLong implements ArgumentMatcher<MapSqlParameterSource> {
+	private static class IsSameId implements ArgumentMatcher<MapSqlParameterSource> {
 		private final MapSqlParameterSource mapSqlParameterSource;
 
-		public IsSameLatLong(MapSqlParameterSource sqlParameterSource) {
+		public IsSameId(MapSqlParameterSource sqlParameterSource) {
 			this.mapSqlParameterSource = sqlParameterSource;
 		}
 

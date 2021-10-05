@@ -80,7 +80,7 @@
 <div class="d-flex justify-content-between align-items-center mb-5 mt-5">
     <button class="btn btn-outline-primary" onclick="window.location.href='/employees'">Go to the List of Employees
     </button>
-    <button form="employeeData" id="<tiles:insertAttribute name="saveButtonName"/>" class="btn btn-outline-secondary"
+    <button id="<tiles:insertAttribute name="saveButtonName"/>" class="btn btn-outline-secondary"
             style="width: 15em;">
         <tiles:insertAttribute name="saveButtonName"/></button>
     <button id="delete" class="btn btn-outline-danger">Delete</button>
@@ -118,6 +118,10 @@
                 data: getFormAsJson(),
                 success: function (data, textStatus, xhr) {
                     window.location.href = '/employees';
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                 //   alert(xhr.status);
+                    alert(thrownError.message);
                 }
             })
         });
@@ -133,7 +137,12 @@
                 contentType: 'application/json',
                 data: getFormAsJson(),
                 success: function (data, textStatus, xhr) {
-                    window.location.href = '/employees';
+                    window.location.href = "/employees";
+                  //  window.location("/employees");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                 //   alert(thrownError.message);
+                    alert(JSON.parse(xhr.responseText)["message"]);
                 }
             })
         });
