@@ -2,7 +2,6 @@ package com.mastery.java.task.rest;
 
 import com.mastery.java.task.service.EmployeeService;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 public class EmployeeControllerIntegrationTest extends AbstractEmployeeControllerTest {
 
 	@Autowired
-    private EmployeeService employeeService;
+    private EmployeeService EmployeeService;
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -27,7 +26,7 @@ public class EmployeeControllerIntegrationTest extends AbstractEmployeeControlle
 	@BeforeAll
     @Override
     protected void set() {
-		existentId = employeeService.createEmployee(employee);
+        existentId = EmployeeService.createEmployee(employee).getId();
 		setMockmvc(mockMvc);
 	}
 }

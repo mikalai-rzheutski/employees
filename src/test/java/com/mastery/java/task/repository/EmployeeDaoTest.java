@@ -1,14 +1,13 @@
-package com.mastery.java.task.dal;
+package com.mastery.java.task.repository;
 
-import com.mastery.java.task.dto.Employee;
-import com.mastery.java.task.dto.Gender;
+import com.mastery.java.task.model.Gender;
+import com.mastery.java.task.model.entities.employee.Employee;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -18,13 +17,12 @@ import java.time.LocalDate;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.argThat;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class EmployeeDaoTest {
-
 
 	@Mock
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -32,11 +30,12 @@ public class EmployeeDaoTest {
 	@InjectMocks
 	private EmployeeDao employeeDao;
 
-	private Employee employee;
+    private Employee employee, employeeToSave;
 
 	@BeforeAll
-	public void setUp() {
-		employee = new Employee("Peter",
+    public void set() {
+        employee = new Employee(1, "Peter", "Pen", 1, "character", Gender.MALE, LocalDate.of(1902, 1, 1));
+        employeeToSave = new Employee(null, "Peter",
 				"Pen",
 				1,
 				"character",
@@ -49,10 +48,10 @@ public class EmployeeDaoTest {
 				ArgumentMatchers.any(EmployeeDao.EmployeeRowMapper.class)))
 			   .thenReturn(employee);
 
-		Mockito.when(namedParameterJdbcTemplate.queryForObject(Mockito.eq(EmployeeDao.GET_EMPLOYEE_BY_ID),
-				argThat(new IsSameId(new MapSqlParameterSource().addValue("id", 10))),
-				ArgumentMatchers.any(EmployeeDao.EmployeeRowMapper.class)))
-				.thenThrow(EmptyResultDataAccessException.class);
+        Mockito.when(namedParameterJdbcTemplate.queryForObject(Mockito.eq(EmployeeDao.UPDATE_EMPLOYEE), ArgumentMatchers
+                                                                       .any(BeanPropertySqlParameterSource.class),
+                                                               ArgumentMatchers.any(EmployeeDao.EmployeeRowMapper.class)))
+               .thenReturn(employee);
 
 		Mockito.when(namedParameterJdbcTemplate.update(Mockito.eq(EmployeeDao.INSERT_EMPLOYEE),
 				ArgumentMatchers.any(BeanPropertySqlParameterSource.class),
@@ -61,22 +60,21 @@ public class EmployeeDaoTest {
 				.then(invocation -> {
 					invocation
 							.<KeyHolder>getArgument(2)
-							.getKeyList()
-							.add(Collections.singletonMap("", 99));
+                            .getKeyList().add(Collections.singletonMap("", 1));
 					return 1;
 				});
 	}
 
 	@Test
 	public void returnEmployeeIfExistsOrNullIfNotExists() {
-
-		assertEquals(employee, employeeDao.read(1));
-		assertNull(employeeDao.read(10));
+        assertEquals(employee, employeeDao.findById(1).get());
+        assertFalse(employeeDao.findById(2).isPresent());
 	}
 
 	@Test
 	public void returnIdOfCreatedEmployee() {
-		assertEquals(99, employeeDao.create(employee));
+        assertEquals(employee, employeeDao.save(employee));
+        assertEquals(employee, employeeDao.save(employeeToSave));
 	}
 
 	private static class IsSameId implements ArgumentMatcher<MapSqlParameterSource> {

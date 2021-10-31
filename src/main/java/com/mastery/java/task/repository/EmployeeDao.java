@@ -1,7 +1,8 @@
-package com.mastery.java.task.dal;
+package com.mastery.java.task.repository;
 
-import com.mastery.java.task.dto.Employee;
-import com.mastery.java.task.dto.Gender;
+import com.mastery.java.task.logger.annotations.LogMethodCall;
+import com.mastery.java.task.model.Gender;
+import com.mastery.java.task.model.entities.employee.Employee;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -16,95 +17,68 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class EmployeeDao {
+public class EmployeeDao implements EmployeeRepository {
 
 	public static final String GET_EMPLOYEES = "SELECT * FROM employee ORDER BY id ASC";
-	static final String GET_EMPLOYEE_BY_ID = "SELECT * FROM employee WHERE id = :id";
-	static final String INSERT_EMPLOYEE = "INSERT INTO employee(" +
+
+    public static final String GET_EMPLOYEE_BY_ID = "SELECT * FROM employee WHERE id = :id";
+
+    public static final String INSERT_EMPLOYEE = "INSERT INTO employee(" +
 			"first_name, last_name, department_id, job_title, gender, date_of_birth)" +
 			" VALUES (:firstName, :lastName, :departmentId, :jobTitle, CAST(:gender AS gender_type), :dateOfBirth)";
-	static final String UPDATE_EMPLOYEE = "UPDATE employee SET first_name = :firstName," +
-			" last_name = :lastName," +
-			" department_id = :departmentId," +
-			" job_title = :jobTitle," +
-			" gender = CAST(:gender AS gender_type)," +
-			" date_of_birth = :dateOfBirth" +
-			" WHERE id = :id";
-	static final String DELETE_EMPLOYEE_BY_ID = "DELETE FROM employee WHERE id = :id";
-	static final String COUNT_EMPLOYEES_BY_ID = "SELECT COUNT(1) FROM employee WHERE id = :id";
 
+    public static final String UPDATE_EMPLOYEE =
+            "UPDATE employee SET first_name = :firstName," + " last_name = :lastName," +
+            " department_id = :departmentId," + " job_title = :jobTitle," + " gender = CAST(:gender AS gender_type)," +
+            " date_of_birth = :dateOfBirth" + " WHERE id = :id";
+
+    public static final String DELETE_EMPLOYEE_BY_ID = "DELETE FROM employee WHERE id = :id";
+
+    public static final String COUNT_EMPLOYEES_BY_ID = "SELECT COUNT(1) FROM employee WHERE id = :id";
 
 	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-	/**
-	 * Returns a collection of all the records from the Employee table
-	 *
-	 * @return a collection of Employees mapped to the obtained record
-	 */
-	public List<Employee> getAll() {
+    public List<Employee> findAll() {
 		return namedParameterJdbcTemplate.query(GET_EMPLOYEES, new EmployeeRowMapper());
 	}
 
-	/**
-	 * Returns a record from the Employee table by its identifier
-	 * @param id an identifier of the record to be returned
-	 * @return the Employee object mapped to the obtained record
-	 */
-	public Employee read(int id) {
-
+    public Optional<Employee> findById(Integer id) {
 		Employee employee;
 		try {
 			employee = namedParameterJdbcTemplate.queryForObject(GET_EMPLOYEE_BY_ID, new MapSqlParameterSource()
 					.addValue("id", id), new EmployeeRowMapper());
 		} catch (EmptyResultDataAccessException e) {
-			return null;
-		}
-		return employee;
-	}
+            employee = null;
+        }
+        return Optional.ofNullable(employee);
+    }
 
-	/**
-	 * Adds a new record to the Employee table
-	 * @param employee an <code>Employee</code> object to be added
-	 * @return an id of the new added record
-	 */
-	public int create(Employee employee) {
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-		namedParameterJdbcTemplate.update(INSERT_EMPLOYEE, new EmployeePropertySqlParameterSource(employee), keyHolder, new String[]{"id"});
-		return keyHolder.getKey().intValue();
-	}
+    @LogMethodCall
+    public Employee save(Employee employee) {
+        if ( employee.getId() == null ) {
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            namedParameterJdbcTemplate
+                    .update(INSERT_EMPLOYEE, new EmployeePropertySqlParameterSource(employee), keyHolder,
+                            new String[]{"id"});
+            employee.setId(keyHolder.getKey().intValue());
+        }
+        else {
+            namedParameterJdbcTemplate.update(UPDATE_EMPLOYEE, new EmployeePropertySqlParameterSource(employee));
+        }
+        return employee;
+    }
 
-	/**
-	 * Modifies an existent record in the Employee table
-	 * @param id       an identifier of the record to be modified
-	 * @param employee a <code>Employee</code> object containing new values
-	 * @return a number of the modified records. Normally, it should be equal to one.
-	 */
-	public int update(int id, Employee employee) {
-		employee.setId(id);
-		return namedParameterJdbcTemplate.update(UPDATE_EMPLOYEE, new EmployeePropertySqlParameterSource(employee));
-	}
-
-	/**
-	 * Deletes a record in the Employee table
-	 * @param id an identifier of the record to be deleted
-	 */
-	public void delete(int id) {
+    public void deleteById(Integer id) {
 		namedParameterJdbcTemplate.update(DELETE_EMPLOYEE_BY_ID, new MapSqlParameterSource()
 				.addValue("id", id));
 	}
 
-	/**
-	 * Checks if the record with given identifier exists in the database
-	 *
-	 * @param id an identifier of the record to be checked
-	 * @return true if the record with given identifier exists in the database or false if it does not
-	 */
-	public boolean isEmployeeExistent(int id) {
+    public boolean existsById(Integer id) {
 		return namedParameterJdbcTemplate.queryForObject(COUNT_EMPLOYEES_BY_ID, new MapSqlParameterSource()
 				.addValue("id", id), Integer.class) > 0;
 	}
@@ -141,4 +115,6 @@ public class EmployeeDao {
 			return value;
 		}
 	}
+
+
 }

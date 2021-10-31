@@ -1,17 +1,22 @@
-package com.mastery.java.task.rest.exception;
+package com.mastery.java.task.exception;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Data
+@ApiModel("Error message")
 public class ErrorMessage {
     private String uri;
+
     private int status;
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    private Date date;
+
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss.SSS")
+    private LocalDateTime timestamp;
+
     private String message;
 }

@@ -1,5 +1,8 @@
 package com.mastery.java.task.config;
 
+import com.fasterxml.classmate.TypeResolver;
+import com.mastery.java.task.exception.ErrorMessage;
+import com.mastery.java.task.model.dtos.employee.EmployeeDto;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
@@ -15,8 +18,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 	@Bean
-	public Docket api() {
+	public Docket api(TypeResolver typeResolver) {
 		return new Docket(DocumentationType.SWAGGER_2)
+				.additionalModels(
+						typeResolver.resolve(EmployeeDto.class),
+						typeResolver.resolve(ErrorMessage.class)
+				)
 				.useDefaultResponseMessages(false)
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.mastery.java.task.rest"))

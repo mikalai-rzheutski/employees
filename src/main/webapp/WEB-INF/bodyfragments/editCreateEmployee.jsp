@@ -2,7 +2,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page isELIgnored="false" %>
-<%@ page import="com.mastery.java.task.dto.Gender" %>
+<%@ page import="com.mastery.java.task.model.Gender" %>
 
 
 <form id="employeeData">
@@ -99,10 +99,8 @@
             $("#gender").val(data.gender);
             $("#dateOfBirth").val(data.dateOfBirth);
         },
-        statusCode: {
-            404: function () {
-                alert('Employee with id=' + data.id + ' was not found in the database');
-            }
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(JSON.parse(xhr.responseText)["message"]);
         }
     });
 </script>
@@ -120,8 +118,7 @@
                     window.location.href = '/employees';
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                 //   alert(xhr.status);
-                    alert(thrownError.message);
+                    alert(JSON.parse(xhr.responseText)["message"]);
                 }
             })
         });
@@ -138,10 +135,8 @@
                 data: getFormAsJson(),
                 success: function (data, textStatus, xhr) {
                     window.location.href = "/employees";
-                  //  window.location("/employees");
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                 //   alert(thrownError.message);
                     alert(JSON.parse(xhr.responseText)["message"]);
                 }
             })

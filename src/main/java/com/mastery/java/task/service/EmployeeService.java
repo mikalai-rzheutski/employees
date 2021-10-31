@@ -1,27 +1,58 @@
 package com.mastery.java.task.service;
 
-import com.mastery.java.task.dto.Employee;
-import org.apache.logging.log4j.Logger;
+import com.mastery.java.task.model.entities.employee.Employee;
+import com.mastery.java.task.repository.EmployeeRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 
-public abstract class EmployeeService {
+@Service
+@AllArgsConstructor
+public class EmployeeService {
 
-    public abstract List<Employee> getAllEmployees();
+    private static final String NOT_FOUND_MSG =
+            "Employee with id=%d cannot be %s since it was not found in the database.";
 
-    public abstract Employee getEmployee(int id);
+    private final EmployeeRepository employeeRepository;
 
-    public abstract int createEmployee(Employee employee);
-
-    public abstract void updateEmployee(int id, Employee employee);
-
-    public abstract void deleteEmployee(int id);
-
-    protected abstract Logger getLogger();
-
-    protected void log() {
-        getLogger().info("Method {} was called from {}",
-                () -> Thread.currentThread().getStackTrace()[2].getMethodName(),
-                () -> this.getClass().getName());
+    public List<Employee> getAllEmployees() {
+        List<Employee> employees = employeeRepository.findAll();
+        employees.sort(Comparator.comparing(Employee::getId));
+        return employees;
     }
+
+    public Employee getEmployee(int id) {
+        return employeeRepository.findById(id).orElseThrow(
+                () -> new EmployeeNotFoundException(String.format(NOT_FOUND_MSG, id, "read")));
+    }
+
+    public Employee createEmployee(Employee employee) {
+        employee.setId(null);
+        return employeeRepository.save(employee);
+    }
+
+    @Transactional
+    public Employee updateEmployee(int id,
+                                   Employee employee) {
+        throwExceptionIfNotFound(id, "updated");
+        employee.setId(id);
+        return employeeRepository.save(employee);
+    }
+
+    @Transactional
+    public void deleteEmployee(int id) {
+        throwExceptionIfNotFound(id, "deleted");
+        employeeRepository.deleteById(id);
+    }
+
+    private void throwExceptionIfNotFound(int id,
+                                          String action) {
+        if ( !employeeRepository.existsById(id) ) {
+            throw new EmployeeNotFoundException(String.format(NOT_FOUND_MSG, id, action));
+        }
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.mastery.java.task.config;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
@@ -41,4 +42,9 @@ public class ViewConfig implements WebMvcConfigurer {
 	WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> enableDefaultServlet() {
 		return (factory) -> factory.setRegisterDefaultServlet(true);
 	}
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 }

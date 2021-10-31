@@ -1,5 +1,6 @@
-package com.mastery.java.task.dto;
+package com.mastery.java.task.model.entities.employee;
 
+import com.mastery.java.task.model.Gender;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 

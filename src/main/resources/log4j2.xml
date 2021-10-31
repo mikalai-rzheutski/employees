@@ -2,7 +2,7 @@
 <Configuration>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{ISO8601} %-5level [%t] %logger{36} - %msg%n"/>
+            <PatternLayout pattern="%highlight{%d{ISO8601} %-5level [%t] %logger{36} - %msg%n}" disableAnsi="false"/>
         </Console>
 
     </Appenders>
@@ -13,6 +13,11 @@
 
         <!-- LOG everything from my application to console -->
         <Logger name="com.mastery.java" level="trace">
+            <AppenderRef ref="Console" />
+        </Logger>
+
+        <!-- LOG everything from AOP-based logger to console -->
+        <Logger name="com.mastery.java.task.logger" level="info" additivity="false">
             <AppenderRef ref="Console" />
         </Logger>
     </Loggers>

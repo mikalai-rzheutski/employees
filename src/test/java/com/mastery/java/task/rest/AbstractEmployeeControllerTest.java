@@ -2,8 +2,9 @@ package com.mastery.java.task.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.mastery.java.task.dto.Employee;
-import com.mastery.java.task.dto.Gender;
+import com.mastery.java.task.model.Gender;
+import com.mastery.java.task.model.dtos.employee.EmployeeDto;
+import com.mastery.java.task.model.entities.employee.Employee;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.http.MediaType;
@@ -19,7 +20,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class AbstractEmployeeControllerTest {
 
-	protected Employee employee = new Employee("Peter", "Pen", 1, "worker", Gender.MALE, LocalDate.of(1902, 1, 1));
+    protected EmployeeDto employeeDto =
+            new EmployeeDto(null, "Peter", "Pen", 1, "worker", Gender.MALE, LocalDate.of(1902, 1, 1));
+
+    protected Employee employee =
+            new Employee(null, "James", "Barrie", 0, "writer", Gender.MALE, LocalDate.of(1860, 5, 9));
 
 	protected int existentId;
 
@@ -27,7 +32,7 @@ public abstract class AbstractEmployeeControllerTest {
 
 	private MockMvc mockMvc;
 
-	private static String asJsonString(final Object obj) {
+    protected static String asJsonString(final Object obj) {
 		try {
 			final ObjectMapper mapper = new ObjectMapper();
 			mapper.registerModule(new JavaTimeModule());
@@ -47,9 +52,9 @@ public abstract class AbstractEmployeeControllerTest {
 	@Test
 	@Transactional
 	public void whenCreateEmployee_thenStatusCreated() throws Exception {
-		mockMvc.perform(post("/api/employees").content(asJsonString(employee))
-											  .contentType(MediaType.APPLICATION_JSON))
-			   .andExpect(status().isCreated());
+        mockMvc.perform(post("/api/employees").content(asJsonString(employeeDto))
+                                              .contentType(MediaType.APPLICATION_JSON))
+               .andExpect(status().isCreated());
 	}
 
 	@Test
@@ -70,7 +75,7 @@ public abstract class AbstractEmployeeControllerTest {
 
 	@Test
 	@Transactional
-	public void whenGetNonExistentEmployees_thenStatusNotFound() throws Exception {
+    public void whenGetNonExistentEmployee_thenStatusNotFound() throws Exception {
 		mockMvc.perform(get("/api/employees/" + nonExistentId))
 			   .andExpect(status().isNotFound());
 	}
@@ -78,17 +83,17 @@ public abstract class AbstractEmployeeControllerTest {
 	@Test
 	@Transactional
 	public void whenUpdateExistentEmployees_thenStatusOk() throws Exception {
-		mockMvc.perform(put("/api/employees/" + existentId).content(asJsonString(employee))
-														   .contentType(MediaType.APPLICATION_JSON))
-			   .andExpect(status().isOk());
+        mockMvc.perform(put("/api/employees/" + existentId).content(asJsonString(employeeDto))
+                                                           .contentType(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk());
 	}
 
 	@Test
 	@Transactional
 	public void whenUpdateNonExistentEmployees_thenStatusNotFound() throws Exception {
-		mockMvc.perform(put("/api/employees/" + nonExistentId).content(asJsonString(employee))
-															  .contentType(MediaType.APPLICATION_JSON))
-			   .andExpect(status().isNotFound());
+        mockMvc.perform(put("/api/employees/" + nonExistentId).content(asJsonString(employeeDto))
+                                                              .contentType(MediaType.APPLICATION_JSON))
+               .andExpect(status().isNotFound());
 	}
 
 	@Test
