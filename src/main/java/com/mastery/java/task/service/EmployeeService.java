@@ -35,10 +35,8 @@ public class EmployeeService {
     }
 
     @Transactional
-    public Employee updateEmployee(int id,
-                                   Employee employee) {
-        throwExceptionIfNotFound(id, "updated");
-        employee.setId(id);
+    public Employee updateEmployee(Employee employee) {
+        throwExceptionIfNotFound(employee.getId(), "updated");
         return employeeRepository.save(employee);
     }
 
@@ -48,7 +46,7 @@ public class EmployeeService {
         employeeRepository.deleteById(id);
     }
 
-    private void throwExceptionIfNotFound(int id,
+    public void throwExceptionIfNotFound(int id,
                                           String action) {
         if ( !employeeRepository.existsById(id) ) {
             throw new EmployeeNotFoundException(String.format(NOT_FOUND_MSG, id, action));

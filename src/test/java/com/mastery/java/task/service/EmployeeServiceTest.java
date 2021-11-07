@@ -48,8 +48,10 @@ public class EmployeeServiceTest {
 
     @Test
     public void updateEmployeeIfExistsOrThrowsExceptionIfNotExists() {
-        Assertions.assertDoesNotThrow(() -> employeeService.updateEmployee(0, employee));
-        assertThrows(EmployeeNotFoundException.class, () -> employeeService.updateEmployee(1, employee));
+        employee.setId(0);
+        Assertions.assertDoesNotThrow(() -> employeeService.updateEmployee(employee));
+        employee.setId(1);
+        assertThrows(EmployeeNotFoundException.class, () -> employeeService.updateEmployee(employee));
     }
 
     @Test

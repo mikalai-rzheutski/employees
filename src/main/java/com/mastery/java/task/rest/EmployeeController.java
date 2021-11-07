@@ -1,6 +1,7 @@
 package com.mastery.java.task.rest;
 
 import com.mastery.java.task.exception.ErrorMessage;
+import com.mastery.java.task.jms.JmsProducer;
 import com.mastery.java.task.logger.annotations.LogMethodCall;
 import com.mastery.java.task.model.dtos.employee.EmployeeDto;
 import com.mastery.java.task.model.entities.employee.Employee;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +37,8 @@ public class EmployeeController {
 	private final EmployeeService employeeService;
 
     private final ModelMapper modelMapper;
+
+    private final JmsProducer jmsProducer;
 
     private static final String NEGATIVE_ID_MSG = "Id should be nonnegative";
 
@@ -151,7 +155,10 @@ public class EmployeeController {
                                @Valid @RequestBody
                                @Parameter(description = "The new Employee", schema = @Schema(name = "Employee"))
                                        EmployeeDto employeeDto) {
-        employeeService.updateEmployee(id, convertToEntity(employeeDto));
+		employeeService.throwExceptionIfNotFound(id, "updated"); // it is just for compatibility with Swagger and tests
+    	employeeDto.setId(id);
+		jmsProducer.updateEmployee(convertToEntity(employeeDto));
+    //	employeeService.updateEmployee(convertToEntity(employeeDto));
 	}
 
 	@Operation(summary = "Deletes Employee by ID")

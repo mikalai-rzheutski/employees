@@ -28,7 +28,7 @@ public abstract class AbstractEmployeeControllerTest {
 
 	protected int existentId;
 
-	protected int nonExistentId = Integer.MAX_VALUE;
+	protected static int nonExistentId = Integer.MAX_VALUE;
 
 	private MockMvc mockMvc;
 
