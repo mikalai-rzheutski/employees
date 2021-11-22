@@ -2,7 +2,7 @@ package com.mastery.java.task.service;
 
 import com.mastery.java.task.model.entities.employee.Employee;
 import com.mastery.java.task.repository.EmployeeRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,7 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EmployeeService {
 
     private static final String NOT_FOUND_MSG =
