@@ -10,23 +10,20 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
 public class EmployeeControllerIntegrationTest extends AbstractEmployeeControllerTest {
 
-	@Autowired
-    private EmployeeService EmployeeService;
+  @Autowired private EmployeeService EmployeeService;
 
-	@Autowired
-	private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-	@BeforeAll
-    @Override
-    protected void set() {
-        existentId = EmployeeService.createEmployee(employee).getId();
-		setMockmvc(mockMvc);
-	}
+  @BeforeAll
+  @Override
+  protected void set() {
+    existentId = EmployeeService.createEmployee(employee).getId();
+    setMockmvc(mockMvc);
+  }
 }

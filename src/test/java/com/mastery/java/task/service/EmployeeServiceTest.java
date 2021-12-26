@@ -3,7 +3,6 @@ package com.mastery.java.task.service;
 import com.mastery.java.task.model.Gender;
 import com.mastery.java.task.model.entities.employee.Employee;
 import com.mastery.java.task.repository.EmployeeJpaRepository;
-import com.mastery.java.task.repository.EmployeeRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -23,40 +22,39 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class EmployeeServiceTest {
-    protected Employee employee =
-            new Employee(null, "Peter", "Pen", 1, "character", Gender.MALE, LocalDate.of(1902, 1, 1));
+  protected Employee employee =
+      new Employee(null, "Peter", "Pen", 1, "character", Gender.MALE, LocalDate.of(1902, 1, 1));
 
-    @Mock
-    private EmployeeRepository employeeRepository;
+  @Mock private EmployeeJpaRepository employeeJpaRepository;
 
-    private EmployeeService employeeService;
+  private EmployeeService employeeService;
 
-    @BeforeAll
-    public void set() {
-        MockitoAnnotations.openMocks(this);
-        Mockito.when(employeeRepository.findById(0)).thenReturn(Optional.ofNullable(employee));
-        Mockito.when(employeeRepository.findById(1)).thenReturn(Optional.ofNullable(null));
-        Mockito.when(employeeRepository.existsById(0)).thenReturn(true);
-        employeeService = new EmployeeService(employeeRepository);
-    }
+  @BeforeAll
+  public void set() {
+    MockitoAnnotations.openMocks(this);
+    Mockito.when(employeeJpaRepository.findById(0)).thenReturn(Optional.ofNullable(employee));
+    Mockito.when(employeeJpaRepository.findById(1)).thenReturn(Optional.ofNullable(null));
+    Mockito.when(employeeJpaRepository.existsById(0)).thenReturn(true);
+    employeeService = new EmployeeService(employeeJpaRepository);
+  }
 
-    @Test
-    public void returnEmployeeIfExistsOrThrowsExceptionIfNotExists() {
-        assertEquals(employee, employeeService.getEmployee(0));
-        assertThrows(EmployeeNotFoundException.class, () -> employeeService.getEmployee(1));
-    }
+  @Test
+  public void returnEmployeeIfExistsOrThrowsExceptionIfNotExists() {
+    assertEquals(employee, employeeService.getEmployee(0));
+    assertThrows(EntityNotFoundException.class, () -> employeeService.getEmployee(1));
+  }
 
-    @Test
-    public void updateEmployeeIfExistsOrThrowsExceptionIfNotExists() {
-        employee.setId(0);
-        Assertions.assertDoesNotThrow(() -> employeeService.updateEmployee(employee));
-        employee.setId(1);
-        assertThrows(EmployeeNotFoundException.class, () -> employeeService.updateEmployee(employee));
-    }
+  @Test
+  public void updateEmployeeIfExistsOrThrowsExceptionIfNotExists() {
+    employee.setId(0);
+    Assertions.assertDoesNotThrow(() -> employeeService.updateEmployee(employee));
+    employee.setId(1);
+    assertThrows(EntityNotFoundException.class, () -> employeeService.updateEmployee(employee));
+  }
 
-    @Test
-    public void deleteEmployeeIfExistsOrThrowsExceptionIfNotExists() {
-        Assertions.assertDoesNotThrow(() -> employeeService.deleteEmployee(0));
-        assertThrows(EmployeeNotFoundException.class, () -> employeeService.deleteEmployee(1));
-    }
+  @Test
+  public void deleteEmployeeIfExistsOrThrowsExceptionIfNotExists() {
+    Assertions.assertDoesNotThrow(() -> employeeService.deleteEmployee(0));
+    assertThrows(EntityNotFoundException.class, () -> employeeService.deleteEmployee(1));
+  }
 }

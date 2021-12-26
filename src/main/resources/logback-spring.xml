@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <property resource="application.properties" />
+    <property resource="application.properties"/>
 
     <appender name="Console"
               class="ch.qos.logback.core.ConsoleAppender">
@@ -12,30 +12,14 @@
         </layout>
     </appender>
 
-    <appender name="db" class="ch.qos.logback.classic.db.DBAppender">
-        <connectionSource
-                class="ch.qos.logback.core.db.DriverManagerConnectionSource">
-            <driverClass>org.postgresql.Driver</driverClass>
-            <url>${spring.datasource.url}</url>
-            <user>${spring.datasource.username}</user>
-            <password>${spring.datasource.password}</password>
-        </connectionSource>
-    </appender>
-
     <!-- LOG everything at INFO level -->
     <root level="info">
-        <appender-ref ref="Console" />
+        <appender-ref ref="Console"/>
     </root>
 
     <!--LOG everything from my application to console-->
     <logger name="com.mastery.java.task.rest" level="trace" additivity="false">
-        <appender-ref ref="Console" />
-    </logger>
-
-    <!-- Because of the limited size of the free Heroku's database, we'll persist logs from ControllerExceptionHandler only -->
-    <logger name="com.mastery.java.task.exception.ExceptionsHandlerController" level="info" additivity="false">
-        <appender-ref ref="db" />
-        <appender-ref ref="Console" />
+        <appender-ref ref="Console"/>
     </logger>
 
 </configuration>

@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0
+      author: Mikalai Rzheutski
+      changes:
+        - sql:
+            sql: CREATE TYPE gender_type AS ENUM ('MALE', 'FEMALE')
+      rollback:
+        - sql:
+            sql: DROP TYPE gender_type;

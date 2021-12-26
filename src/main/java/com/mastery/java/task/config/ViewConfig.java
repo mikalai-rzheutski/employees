@@ -12,39 +12,37 @@ import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 @Configuration
 @EnableWebMvc
 public class ViewConfig implements WebMvcConfigurer {
-	@Bean(name = "tilesConfigurer")
-	public TilesConfigurer getTilesConfigurer() {
-		TilesConfigurer tilesConfigurer = new TilesConfigurer();
-		tilesConfigurer.setDefinitions("/WEB-INF/tiles.xml");
-		return tilesConfigurer;
-	}
+  @Bean(name = "tilesConfigurer")
+  public TilesConfigurer getTilesConfigurer() {
+    TilesConfigurer tilesConfigurer = new TilesConfigurer();
+    tilesConfigurer.setDefinitions("/WEB-INF/tiles.xml");
+    return tilesConfigurer;
+  }
 
-	@Override
-	public void configureViewResolvers(ViewResolverRegistry registry) {
-		TilesViewResolver viewResolver = new TilesViewResolver();
-		registry.viewResolver(viewResolver);
-		registry.jsp()
-				.prefix("/WEB-INF/");
-	}
+  @Override
+  public void configureViewResolvers(ViewResolverRegistry registry) {
+    TilesViewResolver viewResolver = new TilesViewResolver();
+    registry.viewResolver(viewResolver);
+    registry.jsp().prefix("/WEB-INF/");
+  }
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/resources/**")
-				.addResourceLocations("/resources/");
-	}
+  @Override
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+  }
 
-	@Override
-	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-		configurer.enable();
-	}
+  @Override
+  public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+    configurer.enable();
+  }
 
-	@Bean
-	WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> enableDefaultServlet() {
-		return (factory) -> factory.setRegisterDefaultServlet(true);
-	}
+  @Bean
+  WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> enableDefaultServlet() {
+    return (factory) -> factory.setRegisterDefaultServlet(true);
+  }
 
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
+  @Bean
+  public ModelMapper modelMapper() {
+    return new ModelMapper();
+  }
 }

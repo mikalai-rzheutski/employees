@@ -7,10 +7,10 @@
     </select>
 
     <div class="d-flex flex-row justify-content-start align-items-center">
-    <select id="logLevel" class="selectpicker m-5 p-2">
-    </select>
+        <select id="logLevel" class="selectpicker m-5 p-2">
+        </select>
 
-    <button id="update" type="button" class="btn btn-primary">Change logging level</button>
+        <button id="update" type="button" class="btn btn-primary">Change logging level</button>
     </div>
 
 </div>
@@ -44,7 +44,7 @@
                 contentType: 'application/json',
                 data: getLevel(),
                 success: function (data, textStatus, xhr) {
-                    $.getJSON('/actuator/loggers', function(data) {
+                    $.getJSON('/actuator/loggers', function (data) {
                         refreshLoggersList(data);
                         loggerSelect.value = selectedLogger;
                     });
@@ -69,7 +69,7 @@
         var loggers = Object.entries(data.loggers);
         var loggerNodes = Object.keys(data.loggers);
         // clear old options
-        for(i = loggerSelector.options.length-1; i >= 0; i--) {
+        for (i = loggerSelector.options.length - 1; i >= 0; i--) {
             loggerSelector.remove(i);
         }
         for (var i = 0; i < loggers.length; i++) {

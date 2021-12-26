@@ -1,9 +1,13 @@
 package com.mastery.java.task.repository;
 
 import com.mastery.java.task.model.entities.employee.Employee;
-import org.springframework.context.annotation.Primary;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-@Primary
-public interface EmployeeJpaRepository extends EmployeeRepository, Repository<Employee, Integer> {
+import java.util.List;
+
+public interface EmployeeJpaRepository
+    extends JpaRepository<Employee, Integer>, JpaSpecificationExecutor<Employee> {
+
+  List<Employee> findAllByOrderByLastName();
 }

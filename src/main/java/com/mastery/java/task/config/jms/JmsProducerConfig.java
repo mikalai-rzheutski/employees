@@ -11,22 +11,22 @@ import javax.jms.ConnectionFactory;
 @RequiredArgsConstructor
 public class JmsProducerConfig {
 
-    private final ConnectionFactory connectionFactory;
+  private final ConnectionFactory connectionFactory;
 
-    @Bean(name="topicJmsTemplate")
-    public JmsTemplate jmsTopicTemplate() {
-        JmsTemplate template = new JmsTemplate();
-        template.setConnectionFactory(connectionFactory);
-        template.setSessionTransacted(true);
-        template.setPubSubDomain(true);
-        return template;
-    }
+  @Bean(name = "topicJmsTemplate")
+  public JmsTemplate jmsTopicTemplate() {
+    JmsTemplate template = new JmsTemplate();
+    template.setConnectionFactory(connectionFactory);
+    template.setSessionTransacted(true);
+    template.setPubSubDomain(true);
+    return template;
+  }
 
-    @Bean(name="queueJmsTemplate")
-    public JmsTemplate jmsQueueTemplate() {
-        JmsTemplate template = new JmsTemplate();
-        template.setConnectionFactory(connectionFactory);
-        template.setSessionTransacted(true);
-        return template;
-    }
+  @Bean(name = "queueJmsTemplate")
+  public JmsTemplate jmsQueueTemplate() {
+    JmsTemplate template = new JmsTemplate();
+    template.setConnectionFactory(connectionFactory);
+    template.setSessionTransacted(true);
+    return template;
+  }
 }

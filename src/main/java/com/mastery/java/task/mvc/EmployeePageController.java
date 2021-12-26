@@ -10,20 +10,20 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/employees")
 public class EmployeePageController {
 
-	@GetMapping
-	public ModelAndView showListOfAllEmployees() {
-		return new ModelAndView("allEmployees");
-	}
+  @GetMapping
+  public ModelAndView showListOfAllEmployees() {
+    return new ModelAndView("allEmployees");
+  }
 
-	@GetMapping("/{id}")
-	public ModelAndView editEmployee(@PathVariable("id") int id) {
-		ModelAndView model = new ModelAndView("editEmployee");
-		model.addObject("id", id);
-		return model;
-	}
+  @GetMapping("/{id}")
+  public ModelAndView editEmployee(@PathVariable("id") int id) {
+    ModelAndView model = new ModelAndView("editEmployee");
+    model.addObject("id", id);
+    return model;
+  }
 
-	@GetMapping("/new/")
-	public ModelAndView createEmployee() {
-		return new ModelAndView("createEmployee");
-	}
+  @GetMapping("/new/")
+  public ModelAndView createEmployee() {
+    return new ModelAndView("createEmployee");
+  }
 }

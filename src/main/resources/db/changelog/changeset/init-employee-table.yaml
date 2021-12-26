@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id:  2
+      author: Mikalai Rzheutski
+      changes:
+        - sqlFile:
+            dbms:  postgresql
+            path:  db/init-employee.sql
+      rollback:
+        - sqlFile:
+            dbms:  postgresql
+            path:  db/rollback-init-employee.sql

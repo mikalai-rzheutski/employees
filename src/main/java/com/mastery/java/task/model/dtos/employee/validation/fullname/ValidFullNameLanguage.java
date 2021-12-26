@@ -6,10 +6,12 @@ import java.lang.annotation.*;
 
 @Documented
 @Constraint(validatedBy = FullNameLanguageValidator.class)
-@Target( ElementType.TYPE)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidFullNameLanguage {
-    String message() default "Check language of the full name";
-    Class<?>[] groups() default {};
-    Class<? extends Payload>[] payload() default {};
+  String message() default "Check language of the full name";
+
+  Class<?>[] groups() default {};
+
+  Class<? extends Payload>[] payload() default {};
 }
