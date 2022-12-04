@@ -16,7 +16,7 @@ public class EmployeeSpecification implements Specification<Employee> {
 
   @Override
   public Predicate toPredicate(
-      Root<Employee> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder cb) {
+          Root<Employee> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder cb) {
     List<Predicate> predicates = new ArrayList();
     String nonStrictValue = searchParams.remove("nonStrict");
     boolean nonStrictFilter = nonStrictValue != null && nonStrictValue.toLowerCase().equals("yes");
